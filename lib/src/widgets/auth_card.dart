@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
@@ -101,7 +102,8 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
     // replace 0 with minPositive to pass the test
     // https://github.com/flutter/flutter/issues/42527#issuecomment-575131275
     _cardOverlayHeightFactorAnimation =
-        Tween<double>(begin: double.minPositive, end: 1.0).animate(CurvedAnimation(
+        Tween<double>(begin: double.minPositive, end: 1.0)
+            .animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.27272727, .5 /* ~250ms */, curve: Curves.linear),
     ));
@@ -374,7 +376,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   AnimationController _submitAppleController;
   AnimationController _submitGoogleController;
 
-
   Interval _nameTextFieldLoadingAnimationInterval;
   Interval _passTextFieldLoadingAnimationInterval;
   Interval _textButtonLoadingAnimationInterval;
@@ -521,7 +522,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   }
 
   Future<bool> _submitAppleLogin() async {
-
     FocusScope.of(context).requestFocus(FocusNode());
 
     _formKey.currentState.save();
@@ -555,7 +555,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   }
 
   Future<bool> _submitGoogleLogin() async {
-
     FocusScope.of(context).requestFocus(FocusNode());
 
     _formKey.currentState.save();
@@ -587,7 +586,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     return true;
   }
-
 
   Widget _buildNameField(double width, LoginMessages messages, Auth auth) {
     return AnimatedTextFormField(
@@ -630,7 +628,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildConfirmPasswordField(double width, LoginMessages messages, Auth auth) {
+  Widget _buildConfirmPasswordField(
+      double width, LoginMessages messages, Auth auth) {
     return AnimatedPasswordTextFormField(
       animatedWidth: width,
       enabled: auth.isSignup,
@@ -666,27 +665,33 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
           style: theme.textTheme.body1,
           textAlign: TextAlign.left,
         ),
-        onPressed: buttonEnabled ? () {
-          // save state to populate email field on recovery card
-          _formKey.currentState.save();
-          widget.onSwitchRecoveryPassword();
-        } : null,
+        onPressed: buttonEnabled
+            ? () {
+                // save state to populate email field on recovery card
+                _formKey.currentState.save();
+                widget.onSwitchRecoveryPassword();
+              }
+            : null,
       ),
     );
   }
 
-  Widget _buildSubmitButton(ThemeData theme, LoginMessages messages, Auth auth) {
+  Widget _buildSubmitButton(
+      ThemeData theme, LoginMessages messages, Auth auth) {
     return ScaleTransition(
       scale: _buttonScaleAnimation,
       child: AnimatedButton(
         controller: _submitController,
+        textColor: Colors.white,
+        backgroundColor: Colors.redAccent,
         text: auth.isLogin ? messages.loginButton : messages.signupButton,
         onPressed: _submit,
       ),
     );
   }
 
-  Widget _buildSwitchAuthButton(ThemeData theme, LoginMessages messages, Auth auth) {
+  Widget _buildSwitchAuthButton(
+      ThemeData theme, LoginMessages messages, Auth auth) {
     return FadeIn(
       controller: _loadingController,
       offset: .5,
@@ -710,21 +715,30 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     return ScaleTransition(
       scale: _buttonScaleAnimation,
       child: AnimatedButton(
-        color: Colors.blue,
+        backgroundColor: Colors.white,
         controller: _submitAppleController,
-        text: "Apple",
+        image: Image.asset(
+          'assets/images/a_logo_b.png',
+          width: 20,
+          height: 20,
+        ),
+        text: "Sign in with Apple",
+        textColor: Colors.black,
         onPressed: _submitAppleLogin,
       ),
     );
   }
 
-  Widget _buildGoogleButton(ThemeData theme, LoginMessages messages, Auth auth) {
+  Widget _buildGoogleButton(
+      ThemeData theme, LoginMessages messages, Auth auth) {
     return ScaleTransition(
       scale: _buttonScaleAnimation,
       child: AnimatedButton(
-        color: Colors.red,
+        backgroundColor: Colors.white,
         controller: _submitGoogleController,
-        text: "Google",
+        image: Image.asset('assets/images/g_logo.png', width: 20, height: 20),
+        text: "Sign in with Google",
+        textColor: Colors.black,
         onPressed: _submitGoogleLogin,
       ),
     );
@@ -785,9 +799,16 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 _buildForgotPassword(theme, messages),
                 _buildSubmitButton(theme, messages, auth),
                 _buildSwitchAuthButton(theme, messages, auth),
-                (auth.onGoogleLogin != null) ? _buildGoogleButton(theme, messages, auth) : SizedBox(),
-                SizedBox(height: 10,),
-                if(widget.isShowAppleLogin)(auth.onAppleLogin != null) ? _buildAppleButton(theme, messages, auth) : SizedBox(),
+                (auth.onGoogleLogin != null)
+                    ? _buildGoogleButton(theme, messages, auth)
+                    : SizedBox(),
+                SizedBox(
+                  height: 10,
+                ),
+                if (widget.isShowAppleLogin)
+                  (auth.onAppleLogin != null)
+                      ? _buildAppleButton(theme, messages, auth)
+                      : SizedBox(),
               ],
             ),
           ),
@@ -872,7 +893,8 @@ class _RecoverCardState extends State<_RecoverCard>
     }
   }
 
-  Widget _buildRecoverNameField(double width, LoginMessages messages, Auth auth) {
+  Widget _buildRecoverNameField(
+      double width, LoginMessages messages, Auth auth) {
     return AnimatedTextFormField(
       controller: _nameController,
       width: width,
@@ -897,10 +919,12 @@ class _RecoverCardState extends State<_RecoverCard>
   Widget _buildBackButton(ThemeData theme, LoginMessages messages) {
     return FlatButton(
       child: Text(messages.goBackButton),
-      onPressed: !_isSubmitting ? () {
-        _formRecoverKey.currentState.save();
-        widget.onSwitchLogin();
-      } : null,
+      onPressed: !_isSubmitting
+          ? () {
+              _formRecoverKey.currentState.save();
+              widget.onSwitchLogin();
+            }
+          : null,
       padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       textColor: theme.primaryColor,

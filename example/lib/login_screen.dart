@@ -44,6 +44,13 @@ class LoginScreen extends StatelessWidget {
       logo: 'assets/images/ecorp.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
+      onGoogleLogin: (_) async {
+        return "";
+      },
+      onAppleLogin: (_) async {
+        return "";
+      },
+      isShowAppleLogin: true,
       // messages: LoginMessages(
       //   usernameHint: 'Username',
       //   passwordHint: 'Pass',

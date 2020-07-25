@@ -8,14 +8,18 @@ class AnimatedButton extends StatefulWidget {
   AnimatedButton({
     Key key,
     @required this.text,
+    @required this.textColor,
     @required this.onPressed,
     @required this.controller,
+    this.image,
     this.loadingColor,
-    this.color,
+    this.backgroundColor,
   }) : super(key: key);
 
   final String text;
-  final Color color;
+  final Color textColor;
+  final Color backgroundColor;
+  final Image image;
   final Color loadingColor;
   final Function onPressed;
   final AnimationController controller;
@@ -89,7 +93,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
     final theme = Theme.of(context);
     final buttonTheme = theme.floatingActionButtonTheme;
 
-    _color = widget.color ?? buttonTheme.backgroundColor;
+    _color = widget.backgroundColor ?? buttonTheme.backgroundColor;
     _loadingColor = widget.loadingColor ?? theme.accentColor;
 
     _colorAnimation = ColorTween(
@@ -107,7 +111,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
   void didUpdateWidget(AnimatedButton oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.color != widget.color ||
+    if (oldWidget.backgroundColor != widget.backgroundColor ||
         oldWidget.loadingColor != widget.loadingColor) {
       _updateColorAnimation();
     }
@@ -153,12 +157,12 @@ class _AnimatedButtonState extends State<AnimatedButton>
 
     // text width based on fontSize, plus 45.0 for padding
     var textWidth =
-        renderParagraph.getMinIntrinsicWidth(fontSize).ceilToDouble() + 45.0;
+        renderParagraph.getMinIntrinsicWidth(fontSize).ceilToDouble() + 85.0;
 
     // button width is min 120.0 and max 240.0
-    _width = textWidth > 120.0 && textWidth < 240.0
+    _width = textWidth > 120.0 && textWidth < 360.0
         ? textWidth
-        : textWidth >= 240.0 ? 240.0 : 120.0;
+        : textWidth >= 360.0 ? 360.0 : 120.0;
 
     _sizeAnimation = Tween<double>(begin: 1.0, end: _height / _width)
         .animate(CurvedAnimation(
@@ -167,12 +171,14 @@ class _AnimatedButtonState extends State<AnimatedButton>
     ));
   }
 
-  Widget _buildButtonText(ThemeData theme) {
+  Widget _buildButtonText() {
     return FadeTransition(
       opacity: _textOpacityAnimation,
       child: AnimatedText(
         text: widget.text,
-        style: theme.textTheme.button,
+        style: TextStyle(
+          color: widget.textColor,
+        ),
       ),
     );
   }
@@ -209,7 +215,16 @@ class _AnimatedButtonState extends State<AnimatedButton>
                 width: _width,
                 height: _height,
                 alignment: Alignment.center,
-                child: _buildButtonText(theme),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (widget.image != null) Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: widget.image,
+                    ),
+                    _buildButtonText(),
+                  ],
+                ),
               ),
             ),
           ),
