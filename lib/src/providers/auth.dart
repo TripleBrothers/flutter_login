@@ -14,6 +14,8 @@ class Auth with ChangeNotifier {
   Auth({
     this.onLogin,
     this.onSignup,
+    this.onAppleLogin,
+    this.onGoogleLogin,
     this.onRecoverPassword,
     String email = '',
     String password = '',
@@ -24,6 +26,8 @@ class Auth with ChangeNotifier {
 
   final AuthCallback onLogin;
   final AuthCallback onSignup;
+  final AuthCallback onAppleLogin;
+  final AuthCallback onGoogleLogin;
   final RecoverCallback onRecoverPassword;
 
   AuthMode _mode = AuthMode.Login;

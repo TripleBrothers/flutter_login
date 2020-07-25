@@ -218,6 +218,9 @@ class FlutterLogin extends StatefulWidget {
     this.logoTag,
     this.titleTag,
     this.showDebugButtons = false,
+    this.onAppleLogin,
+    this.onGoogleLogin,
+    @required this.isShowAppleLogin,
   }) : super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
@@ -225,6 +228,13 @@ class FlutterLogin extends StatefulWidget {
 
   /// Called when the user hit the submit button when in login mode
   final AuthCallback onLogin;
+
+  // add apple login
+  final AuthCallback onAppleLogin;
+
+  // add google login
+  final AuthCallback onGoogleLogin;
+
 
   /// Called when the user hit the submit button when in recover password mode
   final RecoverCallback onRecoverPassword;
@@ -254,6 +264,8 @@ class FlutterLogin extends StatefulWidget {
   /// Called after the submit animation's completed. Put your route transition
   /// logic here. Recommend to use with [logoTag] and [titleTag]
   final Function onSubmitAnimationCompleted;
+
+  final bool isShowAppleLogin;
 
   /// Hero tag for logo image. If not specified, it will simply fade out when
   /// changing route
@@ -550,6 +562,8 @@ class _FlutterLoginState extends State<FlutterLogin>
           create: (context) => Auth(
             onLogin: widget.onLogin,
             onSignup: widget.onSignup,
+            onAppleLogin: widget.onAppleLogin,
+            onGoogleLogin: widget.onGoogleLogin,
             onRecoverPassword: widget.onRecoverPassword,
           ),
         ),
@@ -581,6 +595,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                         passwordValidator: passwordValidator,
                         onSubmit: _reverseHeaderAnimation,
                         onSubmitCompleted: widget.onSubmitAnimationCompleted,
+                        isShowAppleLogin: widget.isShowAppleLogin,
                       ),
                     ),
                     Positioned(

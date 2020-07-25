@@ -28,6 +28,7 @@ class AuthCard extends StatefulWidget {
     this.passwordValidator,
     this.onSubmit,
     this.onSubmitCompleted,
+    @required this.isShowAppleLogin,
   }) : super(key: key);
 
   final EdgeInsets padding;
@@ -36,6 +37,7 @@ class AuthCard extends StatefulWidget {
   final FormFieldValidator<String> passwordValidator;
   final Function onSubmit;
   final Function onSubmitCompleted;
+  final bool isShowAppleLogin;
 
   @override
   AuthCardState createState() => AuthCardState();
@@ -294,6 +296,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         widget?.onSubmitCompleted();
                       });
                     },
+                    isShowAppleLogin: widget.isShowAppleLogin,
                   ),
                 )
               : _RecoverCard(
@@ -334,6 +337,7 @@ class _LoginCard extends StatefulWidget {
     @required this.onSwitchRecoveryPassword,
     this.onSwitchAuth,
     this.onSubmitCompleted,
+    @required this.isShowAppleLogin,
   }) : super(key: key);
 
   final AnimationController loadingController;
@@ -342,6 +346,7 @@ class _LoginCard extends StatefulWidget {
   final Function onSwitchRecoveryPassword;
   final Function onSwitchAuth;
   final Function onSubmitCompleted;
+  final bool isShowAppleLogin;
 
   @override
   _LoginCardState createState() => _LoginCardState();
@@ -366,6 +371,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   AnimationController _switchAuthController;
   AnimationController _postSwitchAuthController;
   AnimationController _submitController;
+  AnimationController _submitAppleController;
+  AnimationController _submitGoogleController;
+
 
   Interval _nameTextFieldLoadingAnimationInterval;
   Interval _passTextFieldLoadingAnimationInterval;
@@ -405,6 +413,16 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       duration: Duration(milliseconds: 1000),
     );
 
+    _submitAppleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+
+    _submitGoogleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+
     _nameTextFieldLoadingAnimationInterval = const Interval(0, .85);
     _passTextFieldLoadingAnimationInterval = const Interval(.15, 1.0);
     _textButtonLoadingAnimationInterval =
@@ -436,6 +454,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _switchAuthController.dispose();
     _postSwitchAuthController.dispose();
     _submitController.dispose();
+
+    _submitAppleController.dispose();
+    _submitGoogleController.dispose();
   }
 
   void _switchAuthMode() {
@@ -498,6 +519,75 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     return true;
   }
+
+  Future<bool> _submitAppleLogin() async {
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    _formKey.currentState.save();
+    _submitAppleController.forward();
+    setState(() => _isSubmitting = true);
+
+    final auth = Provider.of<Auth>(context, listen: false);
+    String error = await auth.onAppleLogin(LoginData(
+      name: auth.email,
+      password: auth.password,
+    ));
+
+    Future.delayed(const Duration(milliseconds: 270), () {
+      setState(() => _showShadow = false);
+    });
+
+    _submitAppleController.reverse();
+
+    if (!DartHelper.isNullOrEmpty(error)) {
+      showErrorToast(context, error);
+      Future.delayed(const Duration(milliseconds: 271), () {
+        setState(() => _showShadow = true);
+      });
+      setState(() => _isSubmitting = false);
+      return false;
+    }
+
+    widget?.onSubmitCompleted();
+
+    return true;
+  }
+
+  Future<bool> _submitGoogleLogin() async {
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    _formKey.currentState.save();
+    _submitGoogleController.forward();
+    setState(() => _isSubmitting = true);
+
+    final auth = Provider.of<Auth>(context, listen: false);
+    String error = await auth.onGoogleLogin(LoginData(
+      name: auth.email,
+      password: auth.password,
+    ));
+
+    Future.delayed(const Duration(milliseconds: 270), () {
+      setState(() => _showShadow = false);
+    });
+
+    _submitGoogleController.reverse();
+
+    if (!DartHelper.isNullOrEmpty(error)) {
+      showErrorToast(context, error);
+      Future.delayed(const Duration(milliseconds: 271), () {
+        setState(() => _showShadow = true);
+      });
+      setState(() => _isSubmitting = false);
+      return false;
+    }
+
+    widget?.onSubmitCompleted();
+
+    return true;
+  }
+
 
   Widget _buildNameField(double width, LoginMessages messages, Auth auth) {
     return AnimatedTextFormField(
@@ -616,6 +706,30 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildFacebookButton(ThemeData theme, LoginMessages messages, Auth auth) {
+    return ScaleTransition(
+      scale: _buttonScaleAnimation,
+      child: AnimatedButton(
+        color: Colors.blue,
+        controller: _submitAppleController,
+        text: "Facebook",
+        onPressed: _submitAppleLogin,
+      ),
+    );
+  }
+
+  Widget _buildGoogleButton(ThemeData theme, LoginMessages messages, Auth auth) {
+    return ScaleTransition(
+      scale: _buttonScaleAnimation,
+      child: AnimatedButton(
+        color: Colors.red,
+        controller: _submitGoogleController,
+        text: "Google",
+        onPressed: _submitGoogleLogin,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: true);
@@ -671,6 +785,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 _buildForgotPassword(theme, messages),
                 _buildSubmitButton(theme, messages, auth),
                 _buildSwitchAuthButton(theme, messages, auth),
+                (auth.onGoogleLogin != null) ? _buildGoogleButton(theme, messages, auth) : SizedBox(),
+                SizedBox(height: 10,),
+                if(widget.isShowAppleLogin)(auth.onAppleLogin != null) ? _buildFacebookButton(theme, messages, auth) : SizedBox(),
               ],
             ),
           ),
