@@ -706,13 +706,13 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildFacebookButton(ThemeData theme, LoginMessages messages, Auth auth) {
+  Widget _buildAppleButton(ThemeData theme, LoginMessages messages, Auth auth) {
     return ScaleTransition(
       scale: _buttonScaleAnimation,
       child: AnimatedButton(
         color: Colors.blue,
         controller: _submitAppleController,
-        text: "Facebook",
+        text: "Apple",
         onPressed: _submitAppleLogin,
       ),
     );
@@ -787,7 +787,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 _buildSwitchAuthButton(theme, messages, auth),
                 (auth.onGoogleLogin != null) ? _buildGoogleButton(theme, messages, auth) : SizedBox(),
                 SizedBox(height: 10,),
-                if(widget.isShowAppleLogin)(auth.onAppleLogin != null) ? _buildFacebookButton(theme, messages, auth) : SizedBox(),
+                if(widget.isShowAppleLogin)(auth.onAppleLogin != null) ? _buildAppleButton(theme, messages, auth) : SizedBox(),
               ],
             ),
           ),
