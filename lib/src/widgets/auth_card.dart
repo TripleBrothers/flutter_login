@@ -735,7 +735,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     return ScaleTransition(
       scale: _buttonScaleAnimation,
       child: AnimatedButton(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         controller: _submitAppleController,
         image: Image.asset(
           widget.appleImageAssetString,
@@ -743,7 +743,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
           height: 20,
         ),
         text: widget.appleLoginString,
-        textColor: Colors.black,
+        textColor: Colors.white,
         onPressed: _submitAppleLogin,
       ),
     );
@@ -933,6 +933,8 @@ class _RecoverCardState extends State<_RecoverCard>
     return AnimatedButton(
       controller: _submitController,
       text: messages.recoverPasswordButton,
+      textColor: Colors.white,
+      backgroundColor: Colors.redAccent,
       onPressed: !_isSubmitting ? _submit : null,
     );
   }
