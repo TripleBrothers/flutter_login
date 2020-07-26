@@ -30,6 +30,10 @@ class AuthCard extends StatefulWidget {
     this.onSubmit,
     this.onSubmitCompleted,
     @required this.isShowAppleLogin,
+    this.appleLoginString,
+    this.googleLoginString,
+    this.appleImageAssetString,
+    this.googleImageAssetString,
   }) : super(key: key);
 
   final EdgeInsets padding;
@@ -39,6 +43,10 @@ class AuthCard extends StatefulWidget {
   final Function onSubmit;
   final Function onSubmitCompleted;
   final bool isShowAppleLogin;
+  final String appleLoginString;
+  final String googleLoginString;
+  final String appleImageAssetString;
+  final String googleImageAssetString;
 
   @override
   AuthCardState createState() => AuthCardState();
@@ -299,6 +307,10 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                       });
                     },
                     isShowAppleLogin: widget.isShowAppleLogin,
+                    appleLoginString: widget.appleLoginString,
+                    googleLoginString: widget.googleLoginString,
+                    appleImageAssetString: widget.appleImageAssetString,
+                    googleImageAssetString: widget.googleImageAssetString,
                   ),
                 )
               : _RecoverCard(
@@ -340,6 +352,10 @@ class _LoginCard extends StatefulWidget {
     this.onSwitchAuth,
     this.onSubmitCompleted,
     @required this.isShowAppleLogin,
+    this.appleImageAssetString,
+    this.appleLoginString,
+    this.googleImageAssetString,
+    this.googleLoginString,
   }) : super(key: key);
 
   final AnimationController loadingController;
@@ -349,6 +365,10 @@ class _LoginCard extends StatefulWidget {
   final Function onSwitchAuth;
   final Function onSubmitCompleted;
   final bool isShowAppleLogin;
+  final String appleImageAssetString;
+  final String googleImageAssetString;
+  final String appleLoginString;
+  final String googleLoginString;
 
   @override
   _LoginCardState createState() => _LoginCardState();
@@ -718,11 +738,11 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         controller: _submitAppleController,
         image: Image.asset(
-          'assets/images/a_logo_b.png',
+          widget.appleImageAssetString,
           width: 20,
           height: 20,
         ),
-        text: "Sign in with Apple",
+        text: widget.appleLoginString,
         textColor: Colors.black,
         onPressed: _submitAppleLogin,
       ),
@@ -736,8 +756,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       child: AnimatedButton(
         backgroundColor: Colors.white,
         controller: _submitGoogleController,
-        image: Image.asset('assets/images/g_logo.png', width: 20, height: 20),
-        text: "Sign in with Google",
+        image:
+            Image.asset(widget.googleImageAssetString, width: 20, height: 20),
+        text: widget.googleLoginString,
         textColor: Colors.black,
         onPressed: _submitGoogleLogin,
       ),

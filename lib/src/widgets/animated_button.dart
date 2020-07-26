@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'animated_text.dart';
 import 'ring.dart';
 
@@ -176,9 +177,10 @@ class _AnimatedButtonState extends State<AnimatedButton>
       opacity: _textOpacityAnimation,
       child: AnimatedText(
         text: widget.text,
-        style: TextStyle(
+        style: GoogleFonts.notoSerif(
+            textStyle: TextStyle(
           color: widget.textColor,
-        ),
+        )),
       ),
     );
   }
@@ -218,10 +220,11 @@ class _AnimatedButtonState extends State<AnimatedButton>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    if (widget.image != null) Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: widget.image,
-                    ),
+                    if (widget.image != null)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: widget.image,
+                      ),
                     _buildButtonText(),
                   ],
                 ),

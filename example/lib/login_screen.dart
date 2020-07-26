@@ -44,6 +44,7 @@ class LoginScreen extends StatelessWidget {
       logo: 'assets/images/ecorp.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
+
       onGoogleLogin: (_) async {
         return "";
       },
@@ -51,6 +52,10 @@ class LoginScreen extends StatelessWidget {
         return "";
       },
       isShowAppleLogin: true,
+      appleImageAssetString: 'assets/images/a_logo_b.png',
+      googleImageAssetString: 'assets/images/g_logo.png',
+      appleLoginString: 'Sign in with Apple',
+      googleLoginString: 'Sign in with Google',
       // messages: LoginMessages(
       //   usernameHint: 'Username',
       //   passwordHint: 'Pass',

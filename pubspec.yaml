@@ -18,6 +18,7 @@ dependencies:
   quiver: ^2.0.5
   material_design_icons_flutter: ^4.0.5345
   flutter_signin_button: ^1.0.0
+  google_fonts: ^1.1.0
 
 dev_dependencies:
   flutter_test:

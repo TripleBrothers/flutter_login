@@ -220,8 +220,21 @@ class FlutterLogin extends StatefulWidget {
     this.showDebugButtons = false,
     this.onAppleLogin,
     this.onGoogleLogin,
+    this.appleLoginString,
+    this.googleLoginString,
+    this.appleImageAssetString,
+    this.googleImageAssetString,
+
     @required this.isShowAppleLogin,
   }) : super(key: key);
+
+  final String appleLoginString;
+
+  final String googleLoginString;
+
+  final String appleImageAssetString;
+
+  final String googleImageAssetString;
 
   /// Called when the user hit the submit button when in sign up mode
   final AuthCallback onSignup;
@@ -596,6 +609,10 @@ class _FlutterLoginState extends State<FlutterLogin>
                         onSubmit: _reverseHeaderAnimation,
                         onSubmitCompleted: widget.onSubmitAnimationCompleted,
                         isShowAppleLogin: widget.isShowAppleLogin,
+                        appleLoginString: widget.appleLoginString,
+                        googleLoginString: widget.googleLoginString,
+                        appleImageAssetString: widget.appleImageAssetString,
+                        googleImageAssetString: widget.googleImageAssetString,
                       ),
                     ),
                     Positioned(
