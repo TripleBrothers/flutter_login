@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// https://uxdesign.cc/level-up-flutter-page-transition-choreographing-animations-across-screens-efb5ea105fca
 enum ViewState {
@@ -127,7 +128,8 @@ class __HeroTextContentState extends State<_HeroTextContent>
       type: MaterialType.transparency,
       child: Text(
         widget.text,
-        style: widget.style.copyWith(fontSize: fontSize),
+        style: GoogleFonts.pacifico(
+            textStyle: TextStyle(fontSize: fontSize, color: Colors.white)),
         textAlign: widget.textAlign,
         textDirection: widget.textDirection,
         textScaleFactor: widget.textScaleFactor,
