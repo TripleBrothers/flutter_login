@@ -69,6 +69,7 @@ class _AnimationTimeDilationDropdown extends StatelessWidget {
 class _Header extends StatefulWidget {
   _Header({
     this.logoPath,
+    this.logoHeight,
     this.logoTag,
     this.title,
     this.titleTag,
@@ -79,6 +80,7 @@ class _Header extends StatefulWidget {
   });
 
   final String logoPath;
+  final double logoHeight;
   final String logoTag;
   final String title;
   final String titleTag;
@@ -145,7 +147,7 @@ class __HeaderState extends State<_Header> {
         ? Image.asset(
             widget.logoPath,
             filterQuality: FilterQuality.high,
-            height: logoHeight,
+            height: widget.logoHeight,
           )
         : NullWidget();
 
@@ -211,6 +213,7 @@ class FlutterLogin extends StatefulWidget {
     this.title = 'LOGIN',
     this.keyColor,
     this.logo,
+    this.logoHeight,
     this.messages,
     this.theme,
     this.emailValidator,
@@ -261,6 +264,7 @@ class FlutterLogin extends StatefulWidget {
   /// The path to the asset image that will be passed to the `Image.asset()`
   final String logo;
 
+  final double logoHeight;
   /// Describes all of the labels, text hints, button texts and other auth
   /// descriptions
   final LoginMessages messages;
@@ -378,6 +382,7 @@ class _FlutterLoginState extends State<FlutterLogin>
       titleController: _titleController,
       height: height,
       logoPath: widget.logo,
+      logoHeight: widget.logoHeight,
       logoTag: widget.logoTag,
       title: widget.title,
       titleTag: widget.titleTag,

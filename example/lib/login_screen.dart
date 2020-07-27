@@ -42,6 +42,7 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       title: Constants.appName,
       logo: 'assets/images/ecorp.png',
+      logoHeight: 100,
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
 
