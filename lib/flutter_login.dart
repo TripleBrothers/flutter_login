@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'src/providers/login_theme.dart';
 import 'src/widgets/null_widget.dart';
@@ -106,9 +107,10 @@ class __HeaderState extends State<_Header> {
     final renderParagraph = RenderParagraph(
       TextSpan(
         text: widget.title,
-        style: theme.textTheme.display2.copyWith(
+        style: GoogleFonts.pacifico(
+            textStyle: theme.textTheme.display2.copyWith(
           fontSize: widget.loginTheme.beforeHeroFontSize,
-        ),
+        )),
       ),
       textDirection: TextDirection.ltr,
       maxLines: 1,
@@ -228,7 +230,6 @@ class FlutterLogin extends StatefulWidget {
     this.googleLoginString,
     this.appleImageAssetString,
     this.googleImageAssetString,
-
     @required this.isShowAppleLogin,
   }) : super(key: key);
 
@@ -254,7 +255,6 @@ class FlutterLogin extends StatefulWidget {
   // add google login
   final AuthCallback onGoogleLogin;
 
-
   /// Called when the user hit the submit button when in recover password mode
   final RecoverCallback onRecoverPassword;
 
@@ -265,6 +265,7 @@ class FlutterLogin extends StatefulWidget {
   final String logo;
 
   final double logoHeight;
+
   /// Describes all of the labels, text hints, button texts and other auth
   /// descriptions
   final LoginMessages messages;
