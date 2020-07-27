@@ -169,14 +169,14 @@ class __HeaderState extends State<_Header> {
         tag: widget.titleTag,
         largeFontSize: widget.loginTheme.beforeHeroFontSize,
         smallFontSize: widget.loginTheme.afterHeroFontSize,
-        style: GoogleFonts.pacifico(),
+        style: GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, fontSize: 25)),
         viewState: ViewState.enlarged,
       );
     } else if (!DartHelper.isNullOrEmpty(widget.title)) {
       title = Text(
         widget.title,
         key: kTitleKey,
-        style: GoogleFonts.pacifico(),
+        style: GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, fontSize: 25)),
       );
     } else {
       title = null;
