@@ -209,6 +209,7 @@ class FlutterLogin extends StatefulWidget {
     @required this.onLogin,
     @required this.onRecoverPassword,
     this.title = 'LOGIN',
+    this.keyColor,
     this.logo,
     this.messages,
     this.theme,
@@ -235,6 +236,8 @@ class FlutterLogin extends StatefulWidget {
   final String appleImageAssetString;
 
   final String googleImageAssetString;
+
+  final Color keyColor;
 
   /// Called when the user hit the submit button when in sign up mode
   final AuthCallback onSignup;
@@ -444,7 +447,7 @@ class _FlutterLoginState extends State<FlutterLogin>
   }
 
   ThemeData _mergeTheme({ThemeData theme, LoginTheme loginTheme}) {
-    final originalPrimaryColor = loginTheme.primaryColor ?? theme.primaryColor;
+    final originalPrimaryColor = widget.keyColor;
     final primaryDarkShades = getDarkShades(originalPrimaryColor);
     final primaryColor = primaryDarkShades.length == 1
         ? lighten(primaryDarkShades.first)
@@ -452,7 +455,7 @@ class _FlutterLoginState extends State<FlutterLogin>
     final primaryColorDark = primaryDarkShades.length >= 3
         ? primaryDarkShades[2]
         : primaryDarkShades.last;
-    final accentColor = loginTheme.accentColor ?? theme.accentColor;
+    final accentColor = widget.keyColor;
     final errorColor = loginTheme.errorColor ?? theme.errorColor;
     // the background is a dark gradient, force to use white text if detect default black text color
     final isDefaultBlackText = theme.textTheme.display2.color ==

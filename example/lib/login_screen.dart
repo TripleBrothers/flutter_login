@@ -51,8 +51,9 @@ class LoginScreen extends StatelessWidget {
       onAppleLogin: (_) async {
         return "";
       },
+      keyColor: Colors.purpleAccent,
       isShowAppleLogin: true,
-      appleImageAssetString: 'assets/images/a_logo_b.png',
+      appleImageAssetString: 'assets/images/a_logo_w.png',
       googleImageAssetString: 'assets/images/g_logo.png',
       appleLoginString: 'Sign in with Apple',
       googleLoginString: 'Sign in with Google',
