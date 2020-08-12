@@ -550,8 +550,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     final auth = Provider.of<Auth>(context, listen: false);
     String error = await auth.onAppleLogin(LoginData(
-      name: auth.email,
-      password: auth.password,
+      name: "",
+      password: "",
     ));
 
     Future.delayed(const Duration(milliseconds: 270), () {
@@ -583,8 +583,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     final auth = Provider.of<Auth>(context, listen: false);
     String error = await auth.onGoogleLogin(LoginData(
-      name: auth.email,
-      password: auth.password,
+      name: "",
+      password: "",
     ));
 
     Future.delayed(const Duration(milliseconds: 270), () {
