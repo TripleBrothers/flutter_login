@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
@@ -66,7 +65,6 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   Animation<double> _cardSizeAnimation;
   Animation<double> _cardSize2AnimationX;
   Animation<double> _cardSize2AnimationY;
-  Animation<double> _cardRotationAnimation;
   Animation<double> _cardOverlayHeightFactorAnimation;
   Animation<double> _cardOverlaySizeAndOpacityAnimation;
 
@@ -124,11 +122,11 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         Tween<double>(begin: 1, end: 1).animate(_routeTransitionController);
     _cardSize2AnimationY =
         Tween<double>(begin: 1, end: 1).animate(_routeTransitionController);
-    _cardRotationAnimation =
-        Tween<double>(begin: 0, end: pi / 2).animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: Interval(.72727272, 1 /* ~300ms */, curve: Curves.easeInOutCubic),
-    ));
+//    _cardRotationAnimation =
+//        Tween<double>(begin: 0, end: pi / 2).animate(CurvedAnimation(
+//      parent: _routeTransitionController,
+//      curve: Interval(.72727272, 1 /* ~300ms */, curve: Curves.easeInOutCubic),
+//    ));
   }
 
   @override
@@ -174,22 +172,15 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   }
 
   Future<void> _forwardChangeRouteAnimation() {
-    final isLogin = Provider.of<Auth>(context, listen: false).isLogin;
-    final deviceSize = MediaQuery.of(context).size;
-    final cardSize = getWidgetSize(_cardKey);
-    // add .25 to make sure the scaling will cover the whole screen
-    final widthRatio =
-        deviceSize.width / cardSize.height + (isLogin ? .25 : .65);
-    final heightRatio = deviceSize.height / cardSize.width + .25;
 
     _cardSize2AnimationX =
-        Tween<double>(begin: 1.0, end: heightRatio / cardSizeScaleEnd)
+        Tween<double>(begin: 1.0, end: 0.0)
             .animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
     ));
     _cardSize2AnimationY =
-        Tween<double>(begin: 1.0, end: widthRatio / cardSizeScaleEnd)
+        Tween<double>(begin: 1.0, end: 0.0)
             .animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
@@ -331,7 +322,6 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         return Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
-            ..rotateZ(_cardRotationAnimation.value)
             ..scale(_cardSizeAnimation.value, _cardSizeAnimation.value)
             ..scale(_cardSize2AnimationX.value, _cardSize2AnimationY.value),
           child: current,
@@ -773,72 +763,67 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     final cardWidth = min(deviceSize.width * 0.75, 360.0);
     const cardPadding = 16.0;
     final textFieldWidth = cardWidth - cardPadding * 2;
-    Widget authForm;
-    if (_showShadow == false) {
-      authForm = Container();
-    } else {
-      authForm = Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                left: cardPadding,
-                right: cardPadding,
-                top: cardPadding + 10,
-              ),
-              width: cardWidth,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildNameField(textFieldWidth, messages, auth),
-                  SizedBox(height: 20),
-                  _buildPasswordField(textFieldWidth, messages, auth),
-                  SizedBox(height: 10),
-                ],
-              ),
+    final authForm = Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(
+              left: cardPadding,
+              right: cardPadding,
+              top: cardPadding + 10,
             ),
-            ExpandableContainer(
-              backgroundColor: theme.accentColor,
-              controller: _switchAuthController,
-              initialState: isLogin
-                  ? ExpandableContainerState.shrunk
-                  : ExpandableContainerState.expanded,
-              alignment: Alignment.topLeft,
-              color: theme.cardTheme.color,
-              width: cardWidth,
-              padding: EdgeInsets.symmetric(
-                horizontal: cardPadding,
-                vertical: 10,
-              ),
-              onExpandCompleted: () => _postSwitchAuthController.forward(),
-              child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
+            width: cardWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildNameField(textFieldWidth, messages, auth),
+                SizedBox(height: 20),
+                _buildPasswordField(textFieldWidth, messages, auth),
+                SizedBox(height: 10),
+              ],
             ),
-            Container(
-              padding: Paddings.fromRBL(cardPadding),
-              width: cardWidth,
-              child: Column(
-                children: <Widget>[
-                  _buildForgotPassword(theme, messages),
-                  _buildSubmitButton(theme, messages, auth),
-                  _buildSwitchAuthButton(theme, messages, auth),
-                  (auth.onGoogleLogin != null)
-                      ? _buildGoogleButton(theme, messages, auth)
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
+          ),
+          Container(
+            padding: Paddings.fromRBL(cardPadding),
+            width: cardWidth,
+            child: Column(
+              children: <Widget>[
+                _buildForgotPassword(theme, messages),
+                _buildSubmitButton(theme, messages, auth),
+                _buildSwitchAuthButton(theme, messages, auth),
+                (auth.onGoogleLogin != null)
+                    ? _buildGoogleButton(theme, messages, auth)
+                    : SizedBox(),
+                SizedBox(
+                  height: 10,
+                ),
+                if (widget.isShowAppleLogin)
+                  (auth.onAppleLogin != null)
+                      ? _buildAppleButton(theme, messages, auth)
                       : SizedBox(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  if (widget.isShowAppleLogin)
-                    (auth.onAppleLogin != null)
-                        ? _buildAppleButton(theme, messages, auth)
-                        : SizedBox(),
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
 
     return FittedBox(
       child: Card(
