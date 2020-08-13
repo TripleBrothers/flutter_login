@@ -172,16 +172,13 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   }
 
   Future<void> _forwardChangeRouteAnimation() {
-
     _cardSize2AnimationX =
-        Tween<double>(begin: 1.0, end: 0.0)
-            .animate(CurvedAnimation(
+        Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
     ));
     _cardSize2AnimationY =
-        Tween<double>(begin: 1.0, end: 0.0)
-            .animate(CurvedAnimation(
+        Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
     ));
@@ -513,9 +510,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 //      setState(() => _showShadow = false);
 //    });
 
+    _submitController.reverse();
 
     if (!DartHelper.isNullOrEmpty(error)) {
-      _submitController.reverse();
       showErrorToast(context, error);
       Future.delayed(const Duration(milliseconds: 271), () {
         setState(() => _showShadow = true);
@@ -537,29 +534,23 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     setState(() => _isSubmitting = true);
 
     final auth = Provider.of<Auth>(context, listen: false);
-    String error = await auth.onAppleLogin(LoginData(
-      name: "",
-      password: "",
-    ));
-
-//    Future.delayed(const Duration(milliseconds: 270), () {
-//      setState(() => _showShadow = false);
-//    });
-
-
-    if (!DartHelper.isNullOrEmpty(error)) {
+    return auth.onAppleLogin(LoginData(name: "", password: "")).then((error) {
+      if (!DartHelper.isNullOrEmpty(error)) {
+        _submitAppleController.reverse();
+        showErrorToast(context, error);
+        Future.delayed(const Duration(milliseconds: 271), () {
+          setState(() => _showShadow = true);
+        });
+        setState(() => _isSubmitting = false);
+        return false;
+      } else {
+        widget?.onSubmitCompleted();
+        return true;
+      }
+    }).catchError((onError) {
       _submitAppleController.reverse();
-      showErrorToast(context, error);
-      Future.delayed(const Duration(milliseconds: 271), () {
-        setState(() => _showShadow = true);
-      });
-      setState(() => _isSubmitting = false);
       return false;
-    }
-
-    widget?.onSubmitCompleted();
-
-    return true;
+    });
   }
 
   Future<bool> _submitGoogleLogin() async {
@@ -570,29 +561,23 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     setState(() => _isSubmitting = true);
 
     final auth = Provider.of<Auth>(context, listen: false);
-    String error = await auth.onGoogleLogin(LoginData(
-      name: "",
-      password: "",
-    ));
-
-//    Future.delayed(const Duration(milliseconds: 270), () {
-//      setState(() => _showShadow = false);
-//    });
-
-
-    if (!DartHelper.isNullOrEmpty(error)) {
+    return auth.onGoogleLogin(LoginData(name: "", password: "")).then((error) {
+      if (!DartHelper.isNullOrEmpty(error)) {
+        _submitGoogleController.reverse();
+        showErrorToast(context, error);
+        Future.delayed(const Duration(milliseconds: 271), () {
+          setState(() => _showShadow = true);
+        });
+        setState(() => _isSubmitting = false);
+        return false;
+      } else {
+        widget?.onSubmitCompleted();
+        return true;
+      }
+    }).catchError((onError) {
       _submitGoogleController.reverse();
-      showErrorToast(context, error);
-      Future.delayed(const Duration(milliseconds: 271), () {
-        setState(() => _showShadow = true);
-      });
-      setState(() => _isSubmitting = false);
       return false;
-    }
-
-    widget?.onSubmitCompleted();
-
-    return true;
+    });
   }
 
   Widget _buildNameField(double width, LoginMessages messages, Auth auth) {
