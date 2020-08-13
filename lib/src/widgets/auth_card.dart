@@ -542,13 +542,13 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       password: "",
     ));
 
-    Future.delayed(const Duration(milliseconds: 270), () {
-      setState(() => _showShadow = false);
-    });
+//    Future.delayed(const Duration(milliseconds: 270), () {
+//      setState(() => _showShadow = false);
+//    });
 
-    _submitAppleController.reverse();
 
     if (!DartHelper.isNullOrEmpty(error)) {
+      _submitAppleController.reverse();
       showErrorToast(context, error);
       Future.delayed(const Duration(milliseconds: 271), () {
         setState(() => _showShadow = true);
@@ -575,9 +575,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       password: "",
     ));
 
-    Future.delayed(const Duration(milliseconds: 270), () {
-      setState(() => _showShadow = false);
-    });
+//    Future.delayed(const Duration(milliseconds: 270), () {
+//      setState(() => _showShadow = false);
+//    });
 
 
     if (!DartHelper.isNullOrEmpty(error)) {
