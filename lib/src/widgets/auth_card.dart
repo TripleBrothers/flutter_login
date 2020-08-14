@@ -562,8 +562,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     final auth = Provider.of<Auth>(context, listen: false);
     return auth.onGoogleLogin(LoginData(name: "", password: "")).then((error) {
+      _submitGoogleController.reverse();
       if (!DartHelper.isNullOrEmpty(error)) {
-        _submitGoogleController.reverse();
         showErrorToast(context, error);
         Future.delayed(const Duration(milliseconds: 271), () {
           setState(() => _showShadow = true);
